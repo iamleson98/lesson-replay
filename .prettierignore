@@ -1,0 +1,4 @@
+vendor/
+build/
+.svelte-kit/
+bun.lock

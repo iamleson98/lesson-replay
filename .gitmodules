@@ -1,0 +1,3 @@
+[submodule "vendor/sui"]
+	path = vendor/sui
+	url = https://github.com/iamleson98/sui.git

@@ -1,0 +1,31 @@
+/*
+ * Quest's motion, on top of the quiz's (`../../components/quiz-motion.css`).
+ * Opacity and transforms only, only inside fixed-size clipped boxes, and
+ * nothing for people who asked for less motion: without the media query every
+ * element is simply in its final state. Selectable things (answer tiles,
+ * chests, characters) never use any of it.
+ */
+@media (prefers-reduced-motion: no-preference) {
+	.qq-fade {
+		animation: qq-fade 420ms ease-out both;
+	}
+	.qq-row {
+		transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	.qq-bar {
+		transition: transform linear;
+	}
+}
+
+@keyframes qq-fade {
+	from {
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	/* The pause bar is only motion: the words say it. */
+	.qq-bar-track {
+		display: none;
+	}
+}

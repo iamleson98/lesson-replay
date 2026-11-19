@@ -1,0 +1,21 @@
+{
+	"extends": "$app/tsconfig",
+	"compilerOptions": {
+		"rewriteRelativeImportExtensions": true,
+		"sourceMap": true,
+		"strict": true,
+		"types": ["$app/types", "node"],
+		// Pins sui's source to this app's svelte: a Snippet made by one copy of
+		// svelte is not a Snippet of another (see lms-web/tsconfig.json).
+		"paths": {
+			"svelte": ["./node_modules/svelte/types/index.d.ts"],
+			"svelte/elements": ["./node_modules/svelte/elements.d.ts"],
+			"svelte/*": ["./node_modules/svelte/types/index.d.ts"]
+		},
+		"typeRoots": ["./node_modules/@types", "./node_modules"]
+	},
+	"include": ["src", "vite.config.ts", "vitest.config.ts", "tests"],
+	// vendor/** holds sui's own SvelteKit app; files under vendor/sui/src still
+	// type-check when imported through #lib.
+	"exclude": ["node_modules", "vendor"]
+}
