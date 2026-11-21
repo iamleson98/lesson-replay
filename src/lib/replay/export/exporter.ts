@@ -41,6 +41,7 @@ import {
 import { PART_BYTES, PartSplitter } from './parts';
 import { perf } from './perf';
 import { BoardPainter, paintCamera, paintScreen, paintStrip } from './painters';
+import { loadBoardFonts } from '../board/render.js';
 import { loadBrandMark } from './brand';
 import { stageLayout } from './layout';
 import { createQuizDom } from './quiz-dom.svelte';
@@ -201,6 +202,7 @@ async function render(
 	const quiz = new QuizStageSource(quizRecords(records));
 	const layout = stageLayout(hasCamera(teacher));
 	const brandMark = await loadBrandMark();
+	await within('render_failed', loadBoardFonts);
 	const boardPainter = new BoardPainter(layout.stage, {
 		url: renderDeckPageUrl(inputs, manifest.class_id ?? ''),
 		load: deckPageLoader(inputs)

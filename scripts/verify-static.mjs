@@ -33,7 +33,16 @@ if (existsSync(app)) {
 	check(chunks.length >= 2 && page, 'the /render page is not in the client bundle');
 }
 
-for (const font of ['inter-5.3.0-latin-var-wght.woff2', 'inter-5.3.0-vietnamese-var-wght.woff2']) {
+// The page's own font and the board's whole stack (static/fonts/README.md): the render waits for
+// every board font, so a missing one fails the render.
+for (const font of [
+	'inter-5.3.0-latin-var-wght.woff2',
+	'inter-5.3.0-vietnamese-var-wght.woff2',
+	'inter-4.1-board-var-wght.woff2',
+	'noto-sans-2.015-superscripts.woff2',
+	'noto-sans-math-3.000-symbols.woff2',
+	'noto-sans-symbols-2-2.008-symbols.woff2'
+]) {
 	check(existsSync(join(BUILD, 'fonts', font)), `build/fonts/${font} is missing`);
 }
 
