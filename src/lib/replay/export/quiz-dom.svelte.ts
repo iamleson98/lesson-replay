@@ -71,7 +71,16 @@ export function cutPartialRows(root: Element): () => void {
 			continue;
 		const bound = box.getBoundingClientRect().bottom;
 		const visit = (parent: Element) => {
-			const kids = Array.from(parent.children);
+			const kids = Array.from(parent.children).filter(
+				(el) => getComputedStyle(el).display !== 'none'
+			);
+			// Columns side by side (a grid's two columns) are not rows of one list: a column stretched to the tallest
+			// one would end below the box and take its whole content out with it. Each column is cut on its own.
+			const tops = kids.map((el) => el.getBoundingClientRect().top);
+			if (kids.length > 1 && tops.every((top) => Math.abs(top - tops[0]) < 1)) {
+				kids.forEach(visit);
+				return;
+			}
 			const rows = rowsOf(parent);
 			const items = rows.length > 0 ? rows : kids;
 			const whole = wholeRows(
