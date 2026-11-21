@@ -386,6 +386,45 @@ describe('what the render leaves out of the stage', () => {
 		}
 	});
 
+	it('cuts each column of a grid on its own, never the whole stage', () => {
+		// The host's question: the question and tiles in a left column, ten standings rows in a right one that
+		// is taller than the scrolling box; a grid stretches the left column to the right one's height.
+		const box = document.createElement('div');
+		box.style.overflowY = 'auto';
+		const grid = document.createElement('div');
+		const left = document.createElement('div');
+		const right = document.createElement('div');
+		const list = document.createElement('ol');
+		const rows = Array.from({ length: 10 }, () => document.createElement('li'));
+		list.append(...rows);
+		right.append(list);
+		left.append(document.createElement('h2'));
+		grid.append(left, right);
+		box.append(grid);
+		document.body.append(box);
+		const rect = (top: number, bottom: number) => () => ({ top, bottom }) as DOMRect;
+		box.getBoundingClientRect = rect(0, 400);
+		grid.getBoundingClientRect = rect(0, 500);
+		left.getBoundingClientRect = rect(0, 500);
+		right.getBoundingClientRect = rect(0, 500);
+		list.getBoundingClientRect = rect(0, 500);
+		rows.forEach((li, i) => (li.getBoundingClientRect = rect(i * 50, (i + 1) * 50)));
+		Object.defineProperty(box, 'scrollHeight', { value: 500 });
+		Object.defineProperty(box, 'clientHeight', { value: 400 });
+		try {
+			const undo = cutPartialRows(document.body);
+			expect(left.style.display).toBe('');
+			expect(rows.map((li) => li.style.display)).toEqual([
+				...Array(8).fill(''),
+				'none',
+				'none'
+			]);
+			undo();
+		} finally {
+			box.remove();
+		}
+	});
+
 	it('hides the host controls (buttons and switches) in the render frame only', () => {
 		const source = readFileSync('src/lib/replay/export/quiz-frame.svelte', 'utf8');
 		expect(source).toMatch(
