@@ -37,7 +37,47 @@ export const COLORS: Record<ColorToken, Record<BoardTheme, string>> = {
 };
 
 const GRID = 32;
-export const FONT_FAMILY = 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif';
+/**
+ * The board's one font stack, drawn the same live, in the player and in the video: Inter, then Noto
+ * Sans (the superscript capitals), Noto Sans Math and Noto Sans Symbols 2 for the symbols Inter
+ * lacks (`static/fonts/README.md`).
+ */
+export const FONT_FAMILY =
+	'"Inter Variable", "Noto Sans", "Noto Sans Math", "Noto Sans Symbols 2", sans-serif';
+
+const BOARD_FAMILIES = new Set([
+	'Inter Variable',
+	'Noto Sans',
+	'Noto Sans Math',
+	'Noto Sans Symbols 2'
+]);
+
+let fontRevision = 0;
+const fontListeners = new Set<() => void>();
+
+// The fonts are subsets loaded as the text needs them: when one arrives, what was drawn (and measured)
+// with a fallback is stale.
+if (typeof document !== 'undefined' && document.fonts) {
+	document.fonts.addEventListener('loadingdone', () => {
+		fontRevision++;
+		for (const listener of fontListeners) listener();
+	});
+}
+
+/** Calls `listener` whenever more of the board's fonts have loaded, so the board can draw again. */
+export function onBoardFontsLoaded(listener: () => void): () => void {
+	fontListeners.add(listener);
+	return () => fontListeners.delete(listener);
+}
+
+/** Loads every face of the board's stack (a render must not draw a frame with fallback text). */
+export async function loadBoardFonts(): Promise<void> {
+	if (typeof document === 'undefined' || !document.fonts) return;
+	const faces = [...document.fonts].filter((f) =>
+		BOARD_FAMILIES.has(f.family.replace(/["']/g, ''))
+	);
+	await Promise.all(faces.map((f) => f.load()));
+}
 
 const strokeOutlines = new WeakMap<StrokeElement, Path2D>();
 
@@ -233,7 +273,8 @@ export class BoardRenderer {
 			o.dpr,
 			o.theme,
 			o.hidden?.join(),
-			this.#pictures.revision
+			this.#pictures.revision,
+			fontRevision
 		].join('|');
 		let layer = this.#layer;
 		if (layer && key === this.#key) return layer;
@@ -299,7 +340,12 @@ function drawGrid(ctx: CanvasRenderingContext2D, o: DrawOptions) {
 /** A text measurer backed by a canvas, memoized per (size, line). */
 export function createMeasure(ctx: CanvasRenderingContext2D): MeasureText {
 	const cache = new Map<string, number>();
+	let seen = fontRevision;
 	return (line, fontSize) => {
+		if (seen !== fontRevision) {
+			cache.clear();
+			seen = fontRevision;
+		}
 		const key = `${fontSize}|${line}`;
 		let width = cache.get(key);
 		if (width === undefined) {
