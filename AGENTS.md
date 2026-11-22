@@ -4,8 +4,10 @@ Instructions for coding agents working in this repository. Humans start at `READ
 
 ## What this is
 
-The replay library (`src/lib/replay`) and the `/render` static app, split out of the class-management
-web app. Svelte 5 (runes), SvelteKit with adapter-static, sui consumed as source from `vendor/sui`.
+The replay library (`src/lib/replay`), split out of the class-management web app: a source library with no
+app, page or build. The web app imports it; streamer-rs takes the board fonts, the replay strings and the
+logo from it and bundles its player, board and quiz screens in its parity tools, so those paths stay.
+Svelte 5 (runes); SvelteKit is kept only for `svelte-kit sync`; sui consumed as source from `vendor/sui`.
 
 ## Rules
 
@@ -22,7 +24,7 @@ web app. Svelte 5 (runes), SvelteKit with adapter-static, sui consumed as source
 
 ## Gates
 
-`bun run check`, `lint`, `format:check`, `test`, `build`, `verify:static` and `scripts/check-upstream-name.sh`
+`bun run check`, `lint`, `format:check`, `test` and `scripts/check-upstream-name.sh`
 (see `README.md`); run them and read the output before claiming work done.
 
 ## Git

@@ -12,21 +12,17 @@
 		"lint": "eslint .",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"test": "vitest run",
-		"build": "vite build",
-		"verify:static": "node scripts/verify-static.mjs"
+		"test": "vitest run"
 	},
 	"dependencies": {
 		"@lucide/svelte": "1.52.0",
 		"bits-ui": "2.19.5",
 		"cn": "0.4.0",
-		"mediabunny": "1.66.0",
 		"perfect-freehand": "1.2.2",
 		"tailwind-variants": "3.3.1"
 	},
 	"devDependencies": {
 		"@eslint/js": "10.0.1",
-		"@sveltejs/adapter-static": "4.0.1",
 		"@sveltejs/kit": "3.1.1",
 		"@sveltejs/vite-plugin-svelte": "7.3.1",
 		"@tailwindcss/vite": "4.3.3",

@@ -1,8 +1,7 @@
 name: ci
 
-# The gates of the render app and of the replay folder: type check, lint and
-# format, the unit tests, the static build, the upstream-name check and a
-# secret scan. The job names are the required status checks of main.
+# The gates of the replay library: type check, lint and format, the unit tests,
+# the upstream-name check and a secret scan. The job names are the required status checks of main.
 
 on:
   push:
@@ -55,22 +54,6 @@ jobs:
           bun-version: ${{ env.BUN_VERSION }}
       - run: bun install --frozen-lockfile
       - run: bun run test
-
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          persist-credentials: false
-          submodules: recursive
-      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
-      - run: bun install --frozen-lockfile
-      - run: bun run build
-      - run: bun run verify:static
 
   name-check:
     name: Name check

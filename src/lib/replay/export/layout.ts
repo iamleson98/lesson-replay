@@ -6,7 +6,9 @@
  * seen whole, as the player shows it.
  */
 
-import { HEIGHT, WIDTH } from './frame-clock';
+/** The size of the rendered video frame. */
+export const WIDTH = 1280;
+export const HEIGHT = 720;
 
 export type Box = { x: number; y: number; w: number; h: number };
 

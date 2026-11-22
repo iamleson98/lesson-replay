@@ -1,7 +1,7 @@
 /**
  * The replay's own strings (Svelte 5 runes), so the folder needs nothing of the
  * app around it. The host sets the language with `use`: the app follows its own
- * language, the render page the worker's `?lang=`. Vietnamese is bundled and
+ * language, the video renderer the language of the lesson. Vietnamese is bundled and
  * the fallback; English loads on demand. A language the folder has no
  * dictionary for shows Vietnamese.
  */

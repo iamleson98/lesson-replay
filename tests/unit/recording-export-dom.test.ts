@@ -19,7 +19,6 @@ import {
 } from '#lib/replay/export/quiz-dom.svelte.js';
 import { SCAN_TIMES, scanRecords } from '#lib/replay/export/quiz-scan.js';
 import { RenderError } from '#lib/replay/export/render-error.js';
-import { renderLocale } from '#lib/replay/export/start.js';
 import { QuestReplay } from '#lib/replay/player/quest-replay.svelte.js';
 import { QuizReplay } from '#lib/replay/player/quiz-replay.svelte.js';
 
@@ -324,14 +323,7 @@ describe('the made-up game that shows every screen', () => {
 	});
 });
 
-describe('what the render page needs from the browser and its address', () => {
-	it('asks for the language in the address, English by default', () => {
-		expect(renderLocale('?lang=vi')).toBe('vi');
-		expect(renderLocale('?lang=en')).toBe('en');
-		expect(renderLocale('')).toBe('en');
-		expect(renderLocale('?lang=fr')).toBe('en');
-	});
-
+describe('what the render needs from the browser', () => {
 	it('fails with render_failed unless the browser emulates reduced motion', () => {
 		const original = window.matchMedia;
 		const media = (matches: boolean) => {

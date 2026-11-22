@@ -28,8 +28,9 @@ import {
 	type SvgShell
 } from './dom-css';
 import type { Box } from './layout';
-import type { Ctx } from './painters';
 import { RenderError, within } from './render-error';
+
+type Ctx = CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
 
 /** The countdown ring (`quiz/components/ring.svelte`, radius 44) moves in steps of 1/60 of its circle: a still second of a 20 s question is three steps, never a repaint per frame. */
 const RING_STEP = (2 * Math.PI * 44) / 60;
