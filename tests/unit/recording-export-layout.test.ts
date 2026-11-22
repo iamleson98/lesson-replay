@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { HEIGHT, WIDTH } from '#lib/replay/export/frame-clock.js';
-import { stageLayout, type Box } from '#lib/replay/export/layout.js';
+import { HEIGHT, stageLayout, WIDTH, type Box } from '#lib/replay/export/layout.js';
 
 const inside = (inner: Box, outer: Box) =>
 	inner.x >= outer.x &&

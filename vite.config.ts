@@ -1,11 +1,11 @@
-import adapter from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'node:path';
 import { defineConfig } from 'vite';
 
-// The render app is a static build: one client-rendered page (/render) behind a
-// 200.html fallback, which is the file the render worker serves it from.
+// lesson-replay is a source library: no page and no build. SvelteKit stays for
+// `svelte-kit sync` (the tsconfig of `check`), and the plugins for the parity
+// bundle of streamer-rs, which builds with this folder's Vite.
 //
 // sui lives in vendor/sui and is consumed as SOURCE: the `imports` of
 // package.json send #lib/sui, #lib/components/ui, #lib/hooks and #lib/utils.js
@@ -25,12 +25,6 @@ export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		sveltekit({
-			adapter: adapter({
-				pages: 'build',
-				assets: 'build',
-				fallback: '200.html',
-				strict: false
-			}),
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries.
 				// Can be removed in svelte 6. Same as sui and lms-web.

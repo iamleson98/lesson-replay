@@ -1,6 +1,6 @@
 /**
  * Vietnamese strings of the lesson replay: the recording player's stages, the quiz
- * and Quest screens it shows and the render page. Keys must match en.ts exactly
+ * and Quest screens it shows and the video of a recording. Keys must match en.ts exactly
  * (tests/unit/replay-locale.test.ts).
  */
 export const vi: Record<string, string> = {
